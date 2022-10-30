@@ -10,7 +10,6 @@ def add_inverse_rels(edge_index, rel):
     return edge_index_all, rel_all
 
 def get_train_batch(x1, x2, x_name1,x_name2,onehot1,onehot2,train_set, k=6):
-    
     e1_neg1 = torch.cdist(x1[train_set[:, 0]], x1, p=1).topk(k+1, largest=False)[1].t()[1:]
     e1_neg2 = torch.cdist(x1[train_set[:, 0]], x2, p=1).topk(k+1, largest=False)[1].t()[1:]
     e2_neg1 = torch.cdist(x2[train_set[:, 1]], x2, p=1).topk(k+1, largest=False)[1].t()[1:]
