@@ -59,7 +59,6 @@ class DBP15K(InMemoryDataset):
             data = Data(x=x, edge_index=edge_index, rel=rel,train_set=train_set.t(), test_set=test_set.t())
         torch.save(self.collate([data]), self.processed_paths[0])
 
-
     def loadNe(self,path):
         f1 = open(path)
         vectors = []
