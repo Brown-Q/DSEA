@@ -11,13 +11,17 @@ triples_2: relation triples in the target KG
 ## Environment
 
 ```
+python>=3.5
 apex
 pytorch
 torch_geometric
+networkx>=2.2
+scipy>=1.1.0
+
 ```
 
 ## Running
 
 ```
-CUDA_VISIBLE_DEVICES=0 python train.py --data data/DBP15K --lang zh_en
+CUDA_VISIBLE_DEVICES=0 python train.py --data data/DBP15K --lang ja_en
 ```
