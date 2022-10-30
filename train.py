@@ -18,12 +18,9 @@ def parse_args():
     parser.add_argument("--data", default="data/DBP15K")
     parser.add_argument("--lang", default="zh_en")
     parser.add_argument("--rate", type=float, default=0.3)
-    
     parser.add_argument("--r_hidden", type=int, default=100)
-
     parser.add_argument("--k", type=int, default=5)
     parser.add_argument("--gamma", type=float, default=3)
-    
     parser.add_argument("--epoch", type=int, default=160)
     parser.add_argument("--neg_epoch", type=int, default=5)
     parser.add_argument("--test_epoch", type=int, default=5)
