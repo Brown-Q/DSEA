@@ -15,8 +15,7 @@ python>=3.5
 apex
 pytorch
 torch_geometric
-networkx>=2.2
-scipy>=1.1.0
+networkx
 
 ```
 
