@@ -13,7 +13,6 @@ class L1_Loss(nn.Module):
     def dis(self, x, y):
         return torch.sum(torch.abs(x-y), dim=-1)/self.lamn
     
-    
     def forward(self, x1, x2,x_name1,x_name2,onehot1,onehot2, train_set, train_batch):
         x_name1=torch.as_tensor(x_name1,dtype=torch.float32)
         x_name2=torch.as_tensor(x_name2,dtype=torch.float32)
