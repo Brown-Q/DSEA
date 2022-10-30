@@ -61,7 +61,6 @@ class DBP15K(InMemoryDataset):
 
 
     def loadNe(self,path):
-        
         f1 = open(path)
         vectors = []
         for i, line in enumerate(f1):
@@ -78,8 +77,7 @@ class DBP15K(InMemoryDataset):
         subj, rel, obj = g.t()
         assoc = torch.full((rel.max().item()+1,), -1, dtype=torch.long)
         assoc[rel.unique()] = torch.arange(rel.unique().size(0))
-        rel = assoc[rel]
-        
+        rel = assoc[rel] 
         idx = []
         with open(ent_path, 'r') as f:
             for line in f:
