@@ -1,13 +1,11 @@
 import os
 import argparse
 import itertools
-
 import apex
 import torch
 import gc
 import torch.nn as nn
 import torch.nn.functional as F
-
 from model import DSEA
 from data import DBP15K
 from loss import L1_Loss
