@@ -85,7 +85,6 @@ class GAT(nn.Module):
         return x
     
 class AttentionNetwork(nn.Module):
-
     def __init__(self, d_model):
         super().__init__()
         self.mk = nn.Sequential(
@@ -115,10 +114,8 @@ class AttentionNetwork(nn.Module):
         X2_1=self.concat(x1,x_name1,onehot1)
         X1_2=self.concat(x2.t(),x_name2.t(),onehot2.t())
         X2_2=self.concat(x1.t(),x_name1.t(),onehot1.t())
-        Attention1=torch.matmul(X1,X1_2)
-        Attention2=torch.matmul(X2,X2_2)
-        Attention1=nn.Softmax(dim=-1)(Attention1)
-        Attention2=nn.Softmax(dim=-1)(Attention2)
+        Attention1=nn.Softmax(dim=-1)(torch.matmul(X1,X1_2))
+        Attention2=nn.Softmax(dim=-1)(torch.matmul(X2,X2_2))
         Wei_kg1=torch.matmul(Attention1,X1_1)
         Wei_kg2=torch.matmul(Attention2,X2_1)
         Re_kg1=Wei_kg1+X1
