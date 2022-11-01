@@ -130,7 +130,6 @@ class AttentionNetwork(nn.Module):
         onehot2[data_batch[:, 1]]=onehot2[data_batch[:, 1]]*kg2[:,2].unsqueeze(1)
         return x1, x_name1,onehot1,x2,x_name2,onehot2            
    
-    
 class DSEA(nn.Module):
     def __init__(self, e_hidden=300, r_hidden=100,embedding_dim=300,dim=900,hidden_size=150,num_layers=1,input_size=100):
         super(DSEA, self).__init__()
