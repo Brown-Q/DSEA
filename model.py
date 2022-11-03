@@ -16,6 +16,7 @@ class GCN(nn.Module):
         deg_inv_sqrt = deg.pow(-0.5)
         norm = deg_inv_sqrt[edge_index_j]*deg_inv_sqrt[edge_index_i]
         x = F.relu(spmm(edge_index[[1, 0]], norm, x.size(0), x.size(0), x))
+        x = F.relu(spmm(edge_index[[1, 0]], norm, x.size(0), x.size(0), x))
         return x
 
 class Highway(nn.Module):
