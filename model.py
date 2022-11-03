@@ -108,18 +108,18 @@ class AttentionNetwork(nn.Module):
         x1_train, x2_train = x1[data_batch[:, 0]], x2[data_batch[:, 1]]
         x1_train_name, x2_train_name = x_name1[data_batch[:, 0]], x_name2[data_batch[:, 1]]
         x1_train_onehot, x2_train_onehot = onehot1[data_batch[:, 0]], onehot2[data_batch[:, 1]]
-        X1=self.concat(x1_train,x1_train_name,x1_train_onehot)
-        X2=self.concat(x2_train,x2_train_name,x2_train_onehot)
-        X1_1=self.concat(x2,x_name2,onehot2)
-        X2_1=self.concat(x1,x_name1,onehot1)
-        X1_2=self.concat(x2.t(),x_name2.t(),onehot2.t())
-        X2_2=self.concat(x1.t(),x_name1.t(),onehot1.t())
-        Attention1=nn.Softmax(dim=-1)(torch.matmul(X1,X1_2))
-        Attention2=nn.Softmax(dim=-1)(torch.matmul(X2,X2_2))
-        Wei_kg1=torch.matmul(Attention1,X1_1)
-        Wei_kg2=torch.matmul(Attention2,X2_1)
-        Re_kg1=Wei_kg1+X1
-        Re_kg2=Wei_kg2+X2
+        concatenate1=self.concat(x1_train,x1_train_name,x1_train_onehot)
+        concatenate2=self.concat(x2_train,x2_train_name,x2_train_onehot)
+        concatenate1_1=self.concat(x2,x_name2,onehot2)
+        concatenate2_1=self.concat(x1,x_name1,onehot1)
+        concatenate1_2=self.concat(x2.t(),x_name2.t(),onehot2.t())
+        concatenate2_2=self.concat(x1.t(),x_name1.t(),onehot1.t())
+        Attention1=nn.Softmax(dim=-1)(torch.matmul(concatenate1,concatenate1_2))
+        Attention2=nn.Softmax(dim=-1)(torch.matmul(concatenate2,concatenate2_2))
+        Wei_kg1=torch.matmul(Attention1,concatenate1_1)
+        Wei_kg2=torch.matmul(Attention2,concatenate2_1)
+        Re_kg1=Wei_kg1+concatenate1
+        Re_kg2=Wei_kg2+concatenate2
         Re_kg1.transpose_(1,0)
         Re_kg2.transpose_(1,0)
         kg1=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg1[:,0,:]),self.mk(Re_kg1[:,1,:]),self.mk(Re_kg1[:,2,:])],dim=-1))
