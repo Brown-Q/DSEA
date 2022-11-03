@@ -11,12 +11,12 @@ triples_2: relation triples in the target KG
 ## Environment
 
 ```
-python>=3.5
-apex
-pytorch
-torch_geometric
-networkx
-
+python==3.6.13
+networkx==2.5.1
+apex==0.1
+pytorch==1.7.1
+torch_geometric==2.0.2
+cuda==11.2
 ```
 
 ## Running
