@@ -122,12 +122,12 @@ class AttentionNetwork(nn.Module):
         Re_kg2=Wei_kg2+concatenate2
         Re_kg1.transpose_(1,0)
         Re_kg2.transpose_(1,0)
-        kg1=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg1[:,0,:]),self.mk(Re_kg1[:,1,:]),self.mk(Re_kg1[:,2,:])],dim=-1))
-        kg2=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg2[:,0,:]),self.mk(Re_kg2[:,1,:]),self.mk(Re_kg2[:,2,:])],dim=-1))
-        x_name1[data_batch[:, 0]]=x_name1[data_batch[:, 0]]*kg1[:,1].unsqueeze(1)
-        onehot1[data_batch[:, 0]]=onehot1[data_batch[:, 0]]*kg1[:,2].unsqueeze(1)
-        x_name2[data_batch[:, 1]]=x_name2[data_batch[:, 1]]*kg2[:,1].unsqueeze(1)
-        onehot2[data_batch[:, 1]]=onehot2[data_batch[:, 1]]*kg2[:,2].unsqueeze(1)
+        fuse_att1=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg1[:,0,:]),self.mk(Re_kg1[:,1,:]),self.mk(Re_kg1[:,2,:])],dim=-1))
+        fuse_att2=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg2[:,0,:]),self.mk(Re_kg2[:,1,:]),self.mk(Re_kg2[:,2,:])],dim=-1))
+        x_name1[data_batch[:, 0]]=x_name1[data_batch[:, 0]]*fuse_att1[:,1].unsqueeze(1)
+        onehot1[data_batch[:, 0]]=onehot1[data_batch[:, 0]]*fuse_att1[:,2].unsqueeze(1)
+        x_name2[data_batch[:, 1]]=x_name2[data_batch[:, 1]]*fuse_att2[:,1].unsqueeze(1)
+        onehot2[data_batch[:, 1]]=onehot2[data_batch[:, 1]]*fuse_att2[:,2].unsqueeze(1)
         return x1, x_name1,onehot1,x2,x_name2,onehot2            
    
 class DSEA(nn.Module):
