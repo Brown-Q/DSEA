@@ -67,7 +67,10 @@ def get_embedding(id2fre):
     for i in list1:
         degree=value[i]
         Degree.append(degree)
-    oneHot=functional.one_hot(torch.tensor(Degree), num_classes=3000)[:,0:300]
+    set1=set(Degree)
+    embed = nn.Embedding(len(set1),300)
+    oneHot=embed(torch.tensor(Degree))
+#     oneHot=functional.one_hot(torch.tensor(Degree), num_classes=3000)[:,0:300]
     return  oneHot,list1
 
 def get_im1oneHot(path):
