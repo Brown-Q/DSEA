@@ -99,35 +99,35 @@ class AttentionNetwork(nn.Module):
         return d              
     
     def forward(self, x1, x_name1,onehot1,x2,x_name2,onehot2, data_batch):
-        x1=torch.as_tensor(x1,dtype=torch.float32)
-        x2=torch.as_tensor(x2,dtype=torch.float32)
-        x_name1=torch.as_tensor(x_name1,dtype=torch.float32)
-        x_name2=torch.as_tensor(x_name2,dtype=torch.float32)
-        onehot1=torch.as_tensor(onehot1,dtype=torch.float32)
-        onehot2=torch.as_tensor(onehot2,dtype=torch.float32)
+        x1 = torch.as_tensor(x1,dtype=torch.float32)
+        x2 = torch.as_tensor(x2,dtype=torch.float32)
+        x_name1 = torch.as_tensor(x_name1,dtype=torch.float32)
+        x_name2 = torch.as_tensor(x_name2,dtype=torch.float32)
+        onehot1 = torch.as_tensor(onehot1,dtype=torch.float32)
+        onehot2 = torch.as_tensor(onehot2,dtype=torch.float32)
         x1_train, x2_train = x1[data_batch[:, 0]], x2[data_batch[:, 1]]
         x1_train_name, x2_train_name = x_name1[data_batch[:, 0]], x_name2[data_batch[:, 1]]
         x1_train_onehot, x2_train_onehot = onehot1[data_batch[:, 0]], onehot2[data_batch[:, 1]]
-        concatenate1=self.concat(x1_train,x1_train_name,x1_train_onehot)
-        concatenate2=self.concat(x2_train,x2_train_name,x2_train_onehot)
-        concatenate1_1=self.concat(x2,x_name2,onehot2)
-        concatenate2_1=self.concat(x1,x_name1,onehot1)
-        concatenate1_2=self.concat(x2.t(),x_name2.t(),onehot2.t())
-        concatenate2_2=self.concat(x1.t(),x_name1.t(),onehot1.t())
-        Attention1=nn.Softmax(dim=-1)(torch.matmul(concatenate1,concatenate1_2))
-        Attention2=nn.Softmax(dim=-1)(torch.matmul(concatenate2,concatenate2_2))
-        Wei_kg1=torch.matmul(Attention1,concatenate1_1)
-        Wei_kg2=torch.matmul(Attention2,concatenate2_1)
-        Re_kg1=Wei_kg1+concatenate1
-        Re_kg2=Wei_kg2+concatenate2
+        concatenate1 = self.concat(x1_train,x1_train_name,x1_train_onehot)
+        concatenate2 = self.concat(x2_train,x2_train_name,x2_train_onehot)
+        concatenate1_1 = self.concat(x2,x_name2,onehot2)
+        concatenate2_1 = self.concat(x1,x_name1,onehot1)
+        concatenate1_2 = self.concat(x2.t(),x_name2.t(),onehot2.t())
+        concatenate2_2 = self.concat(x1.t(),x_name1.t(),onehot1.t())
+        Attention1 = nn.Softmax(dim=-1)(torch.matmul(concatenate1,concatenate1_2))
+        Attention2 = nn.Softmax(dim=-1)(torch.matmul(concatenate2,concatenate2_2))
+        Wei_kg1 = torch.matmul(Attention1,concatenate1_1)
+        Wei_kg2 = torch.matmul(Attention2,concatenate2_1)
+        Re_kg1 = Wei_kg1 + concatenate1
+        Re_kg2 = Wei_kg2 + concatenate2
         Re_kg1.transpose_(1,0)
         Re_kg2.transpose_(1,0)
-        fuse_att1=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg1[:,0,:]),self.mk(Re_kg1[:,1,:]),self.mk(Re_kg1[:,2,:])],dim=-1))
-        fuse_att2=nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg2[:,0,:]),self.mk(Re_kg2[:,1,:]),self.mk(Re_kg2[:,2,:])],dim=-1))
-        x_name1[data_batch[:, 0]]=x_name1[data_batch[:, 0]]*fuse_att1[:,1].unsqueeze(1)
-        onehot1[data_batch[:, 0]]=onehot1[data_batch[:, 0]]*fuse_att1[:,2].unsqueeze(1)
-        x_name2[data_batch[:, 1]]=x_name2[data_batch[:, 1]]*fuse_att2[:,1].unsqueeze(1)
-        onehot2[data_batch[:, 1]]=onehot2[data_batch[:, 1]]*fuse_att2[:,2].unsqueeze(1)
+        fuse_att1 = nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg1[:,0,:]),self.mk(Re_kg1[:,1,:]),self.mk(Re_kg1[:,2,:])],dim=-1))
+        fuse_att2 = nn.Softmax(dim=-1)(torch.cat([self.mk(Re_kg2[:,0,:]),self.mk(Re_kg2[:,1,:]),self.mk(Re_kg2[:,2,:])],dim=-1))
+        x_name1[data_batch[:, 0]] = x_name1[data_batch[:, 0]]*fuse_att1[:,1].unsqueeze(1)
+        onehot1[data_batch[:, 0]] = onehot1[data_batch[:, 0]]*fuse_att1[:,2].unsqueeze(1)
+        x_name2[data_batch[:, 1]] = x_name2[data_batch[:, 1]]*fuse_att2[:,1].unsqueeze(1)
+        onehot2[data_batch[:, 1]] = onehot2[data_batch[:, 1]]*fuse_att2[:,2].unsqueeze(1)
         return x1, x_name1,onehot1,x2,x_name2,onehot2            
    
 class DSEA(nn.Module):
@@ -141,11 +141,11 @@ class DSEA(nn.Module):
         self.gat_e = GAT_E(e_hidden, r_hidden)
         self.gat_r = GAT_R(e_hidden, r_hidden)
         self.gat = GAT(self.layer*e_hidden)
-        self.lstm_layer=nn.LSTM(input_size=embedding_dim,hidden_size=hidden_size,num_layers=num_layers,
+        self.lstm_layer = nn.LSTM(input_size=embedding_dim,hidden_size=hidden_size,num_layers=num_layers,
                         bias=True,batch_first=False,dropout=0.5,bidirectional=True)
-        self.lstm_layer2=nn.LSTM(input_size=300,hidden_size=300,num_layers=num_layers,
+        self.lstm_layer2 = nn.LSTM(input_size=300,hidden_size=300,num_layers=num_layers,
                         bias=True,batch_first=False,dropout=0.5,bidirectional=False)
-        self.attentionnetwork=AttentionNetwork(dim)
+        self.attentionnetwork = AttentionNetwork(dim)
 
     def forward(self, x_e1, edge_index1, rel1, edge_index_all1, rel_all1,x_name1,onehot1,
                 x_e2, edge_index2, rel2, edge_index_all2, rel_all2,x_name2,onehot2,data_batch):
@@ -154,32 +154,32 @@ class DSEA(nn.Module):
         x_r = self.gat_e(x_e1, edge_index1, rel1)
         x_e1 = torch.cat([x_e1, self.gat_r(x_e1, x_r, edge_index1, rel1)], dim=1)
         x_e1 = torch.cat([x_e1, self.gat(x_e1, edge_index_all1)], dim=1)
-        lstm_input=torch.reshape(x_name1.clone() ,(-1,3,300))
-        x_e1=lstm_input.shape[1]**self.layer*x_e1
+        lstm_input = torch.reshape(x_name1.clone() ,(-1,3,300))
+        x_e1 = lstm_input.shape[1]**self.layer*x_e1
         lstm_input.transpose_(1,0)
-        output1,(h_n,c_n)=self.lstm_layer(lstm_input)
-        output1=torch.reshape(output1.clone().transpose_(1,0),(-1,900))
-        lstm_input2=torch.reshape(onehot1.clone() ,(-1,3,300))
+        output1,(h_n,c_n) = self.lstm_layer(lstm_input)
+        output1 = torch.reshape(output1.clone().transpose_(1,0),(-1,900))
+        lstm_input2 = torch.reshape(onehot1.clone() ,(-1,3,300))
         lstm_input2.transpose_(1,0)
-        output2,(h_n,c_n)=self.lstm_layer2(lstm_input2)
-        output2=torch.reshape(output2.clone().transpose_(1,0),(-1,900))
+        output2,(h_n,c_n) = self.lstm_layer2(lstm_input2)
+        output2 = torch.reshape(output2.clone().transpose_(1,0),(-1,900))
         x_e2 = self.highway1(x_e2, self.gcn1(x_e2, edge_index_all2))
         x_e2 = self.highway2(x_e2, self.gcn2(x_e2, edge_index_all2))
         x_r = self.gat_e(x_e2, edge_index2, rel2)
         x_e2 = torch.cat([x_e2, self.gat_r(x_e2, x_r, edge_index2, rel2)], dim=1)
         x_e2 = torch.cat([x_e2, self.gat(x_e2, edge_index_all2)], dim=1)
-        lstm_input=torch.reshape(x_name2.clone() ,(-1,3,300))
-        x_e2=lstm_input.shape[1]**self.layer*x_e2
+        lstm_input = torch.reshape(x_name2.clone() ,(-1,3,300))
+        x_e2 = lstm_input.shape[1]**self.layer*x_e2
         lstm_input.transpose_(1,0)
-        output3,(h_n,c_n)=self.lstm_layer(lstm_input)
-        output3=torch.reshape(output3.clone().transpose_(1,0),(-1,900))
-        lstm_input2=torch.reshape(onehot2.clone() ,(-1,3,300))
+        output3,(h_n,c_n) = self.lstm_layer(lstm_input)
+        output3 = torch.reshape(output3.clone().transpose_(1,0),(-1,900))
+        lstm_input2 = torch.reshape(onehot2.clone() ,(-1,3,300))
         lstm_input2.transpose_(1,0)
-        output4,(h_n,c_n)=self.lstm_layer2(lstm_input2)
-        output4=torch.reshape(output4.clone().transpose_(1,0),(-1,900))
-        x1, x_name1,onehot1,x2,x_name2,onehot2=self.attentionnetwork(x_e1,output1,output2,x_e2,output3,output4,data_batch)
-        x_name1=nn.Softmax(dim=-1)(x_name1)
-        x_name2=nn.Softmax(dim=-1)(x_name2)
-        onehot1=nn.Softmax(dim=-1)(onehot1)
-        onehot2=nn.Softmax(dim=-1)(onehot2)
+        output4,(h_n,c_n) = self.lstm_layer2(lstm_input2)
+        output4 = torch.reshape(output4.clone().transpose_(1,0),(-1,900))
+        x1, x_name1,onehot1,x2,x_name2,onehot2 = self.attentionnetwork(x_e1,output1,output2,x_e2,output3,output4,data_batch)
+        x_name1 = nn.Softmax(dim=-1)(x_name1)
+        x_name2 = nn.Softmax(dim=-1)(x_name2)
+        onehot1 = nn.Softmax(dim=-1)(onehot1)
+        onehot2 = nn.Softmax(dim=-1)(onehot2)
         return x1, x_name1, onehot1, x2, x_name2,onehot2
