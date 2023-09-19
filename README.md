@@ -1,5 +1,5 @@
-## DSEA
-[“Leveraging multimodal features for knowledge graph entity alignment based on dynamic self-attention networks”](https:10.1016/j.eswa.2023.120363).
+
+DSEA: Leveraging multimodal features for knowledge graph entity alignment based on dynamic self-attention networks
 
 ## Datasets
 Please download the datasets [here](https://drive.google.com/file/d/1Q1xqwpWnqjg3X5unmXNfBz_xqVqVdy_E/view?usp=share_link) and extract them into root directory.  
