@@ -1,5 +1,5 @@
 ## DSEA
-Code for ESWA2023 paper [“Leveraging multimodal features for knowledge graph entity alignment based on dynamic self-attention networks”](https:10.1016/j.eswa.2023.120363).
+[“Leveraging multimodal features for knowledge graph entity alignment based on dynamic self-attention networks”](https:10.1016/j.eswa.2023.120363).
 
 ## Datasets
 Please download the datasets [here](https://drive.google.com/file/d/1Q1xqwpWnqjg3X5unmXNfBz_xqVqVdy_E/view?usp=share_link) and extract them into root directory.  
@@ -20,14 +20,3 @@ cuda==11.2
 ## Running  
 CUDA_VISIBLE_DEVICES=0 python train.py --data data/DBP15K --lang ja_en  
 
-## Citation
-If you use this model or code, please cite it as follows:  
-@article{qian2023leveraging,  
-  title={Leveraging multimodal features for knowledge graph entity alignment based on dynamic self-attention networks},  
-  author={Qian, Ye and Pan, Li},  
-  journal={Expert Systems with Applications},  
-  volume={228},  
-  pages={120363},  
-  year={2023},  
-  publisher={Elsevier}  
-}  
