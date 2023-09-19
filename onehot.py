@@ -45,10 +45,10 @@ def LHindex(graph):
         H_index[i] = Hindex(test)
     for i in graph.nodes():
         LH_index[i] = sum(H_index[j] for j in graph[i])
-    maximum=max(LH_index.values())
-    minimum=min(LH_index.values())
+    maximum = max(LH_index.values())
+    minimum = min(LH_index.values())
     for key,value in LH_index.items():
-        LH_index[key]=(float(value)-float(minimum))/(float(maximum)-float(minimum))
+        LH_index[key] = (float(value)-float(minimum))/(float(maximum)-float(minimum))
     return LH_index
 
 def get_embedding(id2fre):
@@ -56,21 +56,21 @@ def get_embedding(id2fre):
     for i in id2fre:
         importance[i[0]]=i[1]
     print('total ent fre dic length: ' + str(len(importance)))
-    value=dict()
-    list1=list(importance.values())
+    value = dict()
+    list1 = list(importance.values())
     j=0
     for i in list1:
         if i not in value:
-            value[i]=j
-            j=j+1
+            value[I] = j
+            j = j+1
     Degree=[]
     for i in list1:
-        degree=value[i]
+        degree = value[i]
         Degree.append(degree)
-    set1=set(Degree)
+    set1 = set(Degree)
     embed = nn.Embedding(len(set1),300)
-    oneHot=embed(torch.tensor(Degree))
-#     oneHot=functional.one_hot(torch.tensor(Degree), num_classes=3000)[:,0:300]
+    oneHot = embed(torch.tensor(Degree))
+#     oneHot = functional.one_hot(torch.tensor(Degree), num_classes=3000)[:,0:300]
     return  oneHot,list1
 
 def get_im1oneHot(path):
@@ -86,8 +86,8 @@ def get_im1oneHot(path):
     for key in result:
         for value in result[key]:
             id2fre[value] = key
-    id2fre=sorted(id2fre.items(), key=lambda e: int(e[0]), reverse=False)  
-    oneHot,list1=get_embedding(id2fre)
+    id2fre = sorted(id2fre.items(), key=lambda e: int(e[0]), reverse=False)  
+    oneHot,list1 = get_embedding(id2fre)
     return  oneHot
 
 def get_im2oneHot(path):
@@ -101,9 +101,9 @@ def get_im2oneHot(path):
     G.add_edges_from(edge)
     lhindex = LHindex(G)
     for i in lhindex:
-        id2fre[i]=int(1000*lhindex[i])
+        id2fre[I] = int(1000*lhindex[i])
     id2fre=sorted(id2fre.items(), key=lambda e: int(e[0]), reverse=False)  
-    oneHot,list1=get_embedding(id2fre)
+    oneHot,list1 = get_embedding(id2fre)
     return  oneHot
 
 def get_im3oneHot(path):
@@ -116,22 +116,22 @@ def get_im3oneHot(path):
         edge.append([strs[0],strs[2]])
     G.add_edges_from(edge)
     for i in G:
-        id2fre[i]=G.degree(i)
-    id2fre=sorted(id2fre.items(), key=lambda e: int(e[0]), reverse=False)  
-    oneHot,list1=get_embedding(id2fre)
+        id2fre[I] = G.degree(i)
+    id2fre = sorted(id2fre.items(), key=lambda e: int(e[0]), reverse=False)  
+    oneHot,list1 = get_embedding(id2fre)
     return  oneHot,list1
 
-path1='data/DBP15K/dbp_wd/triples_1'
-path2='data/DBP15K/dbp_wd/triples_2'
-path3='data/DBP15K/dbp_wd/onehot_1.json'
-path4='data/DBP15K/dbp_wd/onehot_2.json'
-path5='data/DBP15K/dbp_wd/degree_1.json'
-path6='data/DBP15K/dbp_wd/degree_2.json'
+path1 = 'data/DBP15K/dbp_wd/triples_1'
+path2 = 'data/DBP15K/dbp_wd/triples_2'
+path3 = 'data/DBP15K/dbp_wd/onehot_1.json'
+path4 = 'data/DBP15K/dbp_wd/onehot_2.json'
+path5 = 'data/DBP15K/dbp_wd/degree_1.json'
+path6 = 'data/DBP15K/dbp_wd/degree_2.json'
 onehot1 = get_im1oneHot(path1)
 onehot2 = get_im2oneHot(path1)
 onehot3,list1 = get_im3oneHot(path1)
-onehot=torch.cat((onehot1,onehot2,onehot3), 1)
-onehot=torch.tensor(onehot,dtype=float)  
+onehot = torch.cat((onehot1,onehot2,onehot3), 1)
+onehot = torch.tensor(onehot,dtype=float)  
 onehot = onehot.tolist()
 with open(path3,'w') as file_obj:
      json.dump(onehot,file_obj)
@@ -140,8 +140,8 @@ with open(path5,'w') as file_obj:
 onehot1 = get_im1oneHot(path2)
 onehot2 = get_im2oneHot(path2)
 onehot3,list2 = get_im3oneHot(path2)
-onehot=torch.cat((onehot1,onehot2,onehot3), 1)
-onehot=torch.tensor(onehot,dtype=float) 
+onehot = torch.cat((onehot1,onehot2,onehot3), 1)
+onehot = torch.tensor(onehot,dtype=float) 
 onehot = onehot.tolist()
 with open(path4,'w') as file_obj:
      json.dump(onehot,file_obj)
